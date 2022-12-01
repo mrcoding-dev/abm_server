@@ -7,19 +7,29 @@ void setup()
   Serial.begin(9600);   // Inicializamos  el puerto serie  
 }
  
+
+void hacerAlgo(){
+  //Esta funcion es lo que debe hacer el arduino, de resto es comunicacion
+}
+
+
 void loop()
 {
-  if(BT.available())    // Si llega un dato por el puerto BT se envía al monitor serial
+  if(BT.available())    // Aca si llega un dato se imprime
   {
     //Serial.write(BT.read());
-    if(BT.readString()="1"){
+    if(BT.readString()=="1"){
       Serial.println("Recibi el 1");
+    }else{
+      Serial.print("Recibi: ");
+      Serial.print(BT.readString());
+      Serial.print("\n");
     }
-    //Serial.println("XD");
+
   }
  
-  if(Serial.available())  // Si llega un dato por el monitor serial se envía al puerto BT
+  if(Serial.available())  // Aca podemos controlar lo que se manda al bluetooh
   {
-     //BT.write(Serial.read());
+     BT.write(Serial.read());
   }
 }
