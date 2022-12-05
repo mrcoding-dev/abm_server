@@ -25,7 +25,7 @@ debug=True
 
 
 if debug and platform.system() == 'Darwin' or debug and platform.system() == 'Linux':
-    puertos = ['/dev/tty.usbserial-1410']
+    puertos = ['/dev/cu.ArduinoMasterBluetooh']
 elif debug and platform.system() == 'Windows':
     puertos = ['COM4']
 else:
