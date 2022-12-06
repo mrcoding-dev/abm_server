@@ -41,15 +41,25 @@ if continuar:
         except Exception as e:
             print("Error al abrir puerto", e)
 
-def recibido(puerto):
+def recibido(puerto,numero_puerto):
+    "los puertos van desde {0,1,2,3}"
     while True:
         byte = puerto.read()
         if len(byte)>0:
             strings = "".join(map(chr, byte))
             print(strings)
             if strings=='1':
-                print("1 recibido")
-            #print(str(byte.decode('utf-8').replace(' ', '')))
+                for p in comunica:
+                    if numero_puerto==0:
+                        p.write("{1,0,0,0}".encode('utf-8'))
+                    elif numero_puerto==1:
+                        p.write("{0,1,0,0}".encode('utf-8'))
+                    elif numero_puerto==2:
+                        p.write("{0,0,1,0}".encode('utf-8'))
+                    elif numero_puerto==3:
+                        p.write("{0,0,0,1}".encode('utf-8'))
+
+
 
 
 def escritura(puerto):
@@ -61,11 +71,12 @@ def escritura(puerto):
 
 
 if __name__=='__main__':
+
     for p in comunica:
-        t1 = threading.Thread(target=recibido, args=(p,))
-        t2 = threading.Thread(target=escritura, args=(p,))
+        t1 = threading.Thread(target=recibido, args=(p,comunica.index(p)))
+        #t2 = threading.Thread(target=escritura, args=(p,))
         t1.start()
-        t2.start()
+        #t2.start()
 
 
 

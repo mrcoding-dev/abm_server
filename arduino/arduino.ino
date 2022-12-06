@@ -18,13 +18,11 @@ void loop()
   if(BT.available())    // Aca si llega un dato se imprime
   {
     //Serial.write(BT.read());
-    if(BT.readString()=="1"){
-      Serial.println("Recibi el 1");
-    }else{
-      Serial.print("Recibi: ");
-      Serial.print(BT.readString());
-      Serial.print("\n");
-    }
+
+     Serial.print("Recibi: ");
+     Serial.print(BT.readString());
+    Serial.print("\n");
+    
 
   }
  
