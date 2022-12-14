@@ -18,9 +18,14 @@ O ingresar correctamente los COM que vas a utilizar si estas en modo debug.
     return True
 
 debug = True
+R1='/dev/tty.R2D2'
+R2=''
+B1=''
+B2=''
+
 
 if debug and platform.system() == 'Darwin' or debug and platform.system() == 'Linux':
-    puertos = ['/dev/tty.R2D2'] #aca se anota los puertos si se utilizada linux o mac
+    puertos = [R1] #asignacion de roles, de forma creciente, orden 0,1,2,3
 
 elif debug and platform.system() == 'Windows':
     puertos = ['COM4'] #aca de agrega los puertos en windows,
@@ -57,16 +62,29 @@ def recibido(puerto, numero_puerto: int):
                         cadena = "{{{0}000}}".format(strings)
 
                         print(f"recibi {cadena} del puerto 0")
-                        p.write(cadena.encode('utf-8'))
+                        if p.is_open:
+                            p.write(cadena.encode('utf-8'))
+                        else:
+                            print("Ocurrio un error con el puerto", p.port)
                     elif numero_puerto == 1:
                         cadena = "{{0{0}00}}".format(strings)
-                        p.write(cadena.encode('utf-8'))
+
+                        if p.is_open:
+                            p.write(cadena.encode('utf-8'))
+                        else:
+                            print("Ocurrio un error con el puerto", p.port)
                     elif numero_puerto == 2:
                         cadena = "{{00{0}0}}".format(strings)
-                        p.write(cadena.encode('utf-8'))
+                        if p.is_open:
+                            p.write(cadena.encode('utf-8'))
+                        else:
+                            print("Ocurrio un error con el puerto", p.port)
                     elif numero_puerto == 3:
                         cadena = "{{000{0}}}".format(strings)
-                        p.write(cadena.encode('utf-8'))
+                        if p.is_open:
+                            p.write(cadena.encode('utf-8'))
+                        else:
+                            print("Ocurrio un error con el puerto", p.port)
 
 
 
