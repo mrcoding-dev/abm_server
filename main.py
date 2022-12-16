@@ -18,9 +18,9 @@ O ingresar correctamente los COM que vas a utilizar si estas en modo debug.
     return True
 
 debug = True
-R1='/dev/tty.R2D2'
-R2=''
-B1=''
+R1='/dev/tty.R1'
+R2='/dev/tty.C3P0'
+B1='/dev/tty.GARRA1'
 B2=''
 
 
@@ -44,6 +44,13 @@ if continuar:
             print("Error al abrir puerto", e)
 
 
+
+def stop():
+    strings="{ffff}"
+    for p in comunica:
+        strings.write(cadena.encode('utf-8'))
+
+
 def recibido(puerto, numero_puerto: int):
     "los puertos van desde {0,1,2,3}"
     while True:
@@ -54,57 +61,54 @@ def recibido(puerto, numero_puerto: int):
                 #esto se agrega debido a que ocurre un error de parseo de python en los corchetes
                 strings = strings.replace("\n", "")
                 strings = strings.replace(" ", "")
-                for p in comunica:
-                    #aca se juega con la posicion de los puertos, por lo cual es importante tener la identificacion,
-                    #estos van por indice de la lista, des decir comunica[0] es el puerto 0
 
-                    if numero_puerto == 0:
-                        cadena = "{{{0}000}}".format(strings)
+                if strings=="z":
+                    stop()
 
-                        print(f"recibi {cadena} del puerto 0")
-                        if p.is_open:
-                            p.write(cadena.encode('utf-8'))
-                        else:
-                            print("Ocurrio un error con el puerto", p.port)
-                    elif numero_puerto == 1:
-                        cadena = "{{0{0}00}}".format(strings)
+                else:
+                    for p in comunica:
+                        #aca se juega con la posicion de los puertos, por lo cual es importante tener la identificacion,
+                        #estos van por indice de la lista, des decir comunica[0] es el puerto 0
 
-                        if p.is_open:
-                            p.write(cadena.encode('utf-8'))
-                        else:
-                            print("Ocurrio un error con el puerto", p.port)
-                    elif numero_puerto == 2:
-                        cadena = "{{00{0}0}}".format(strings)
-                        if p.is_open:
-                            p.write(cadena.encode('utf-8'))
-                        else:
-                            print("Ocurrio un error con el puerto", p.port)
-                    elif numero_puerto == 3:
-                        cadena = "{{000{0}}}".format(strings)
-                        if p.is_open:
-                            p.write(cadena.encode('utf-8'))
-                        else:
-                            print("Ocurrio un error con el puerto", p.port)
+                        if numero_puerto == 0:
+                            cadena = "{{{0}000}}".format(strings)
+
+                            print(f"recibi {cadena} del puerto 0")
+                            if p.is_open:
+                                p.write(cadena.encode('utf-8'))
+                            else:
+                                print("Ocurrio un error con el puerto", p.port)
+                        elif numero_puerto == 1:
+                            cadena = "{{0{0}00}}".format(strings)
+
+                            if p.is_open:
+                                p.write(cadena.encode('utf-8'))
+                            else:
+                                print("Ocurrio un error con el puerto", p.port)
+                        elif numero_puerto == 2:
+                            cadena = "{{00{0}0}}".format(strings)
+                            if p.is_open:
+                                p.write(cadena.encode('utf-8'))
+                            else:
+                                print("Ocurrio un error con el puerto", p.port)
+                        elif numero_puerto == 3:
+                            cadena = "{{000{0}}}".format(strings)
+                            if p.is_open:
+                                p.write(cadena.encode('utf-8'))
+                            else:
+                                print("Ocurrio un error con el puerto", p.port)
 
 
 
 def iniciar_autos(puerto):
-        cadena="{00c0}"
+        cadena="{xxxx}"
+        #cadena="{aaaa}"
         puerto.write(cadena.encode('utf-8'))
         print(f'{cadena} enviado')
 
 
-def escritura(puerto):
-    while True:
-        dato="f"
-        #cadena = "{{{0},{0},{0},{0}}}".format(dato)
-        cadena="{aaaa}"
-        puerto.write(cadena.encode('utf-8'))
-        print(f'{cadena} enviado')
-        time.sleep(3)
-        cadena = "{rrrr}"
-        puerto.write(cadena.encode('utf-8'))
-        print(f'{cadena} enviado')
+
+
 
 if __name__ =='__main__':
     for p in comunica:
